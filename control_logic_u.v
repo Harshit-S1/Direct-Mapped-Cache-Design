@@ -83,25 +83,25 @@ module control_logic #(
                     end
                 end else if (cpu_write) begin
                     if (WRITE_POLICY == "WRITE_BACK") begin
-                        // 🟢 CHANGED: Write-Back + Write-Allocate
+                        //  Write-Back + Write-Allocate
                         if (is_hit)
                             next_state = S_WRITE_BACK;         
                         else begin
                             miss = 1;
                             // if line dirty, evict first; then fetch new block for write-allocate
                             if (dirty_out)
-                                next_state = S_EVICT_WRITE;    // 🟢 CHANGED
+                                next_state = S_EVICT_WRITE;    // 
                             else
-                                next_state = S_READ_FETCH;     // 🟢 CHANGED
+                                next_state = S_READ_FETCH;     // 
                         end
                     end else begin
-                        // 🟢 CHANGED: Write-Through + No-Write-Allocate
+                        //  Write-Through + No-Write-Allocate
                         if (is_hit)
                             next_state = S_WRITE_THROUGH;      // cache + memory update
                         else begin
                             miss = 1;
                             // write directly to memory, do not allocate in cache
-                            next_state = S_WRITE_THROUGH;      // 🟢 CHANGED
+                            next_state = S_WRITE_THROUGH;      //
                         end
                     end
                 end
@@ -119,7 +119,7 @@ module control_logic #(
                 mem_write_en   = 1;      
                 dirty_in       = 0;      
                 dirty_write_en = 1;
-                next_state     = S_EVICT_WAIT; // 🟢 wait for handshake
+                next_state     = S_EVICT_WAIT; //  wait for handshake
             end
 
             S_EVICT_WAIT: begin
@@ -146,7 +146,7 @@ module control_logic #(
                 data_out       = data_from_mem;
                 miss           = 1;
 
-                // 🟢 FIX: If the original request was a WRITE, perform it now
+                // If the original request was a WRITE, perform it now
                 if (cpu_write && (WRITE_POLICY == "WRITE_BACK"))
                     next_state = S_WRITE_BACK;  // perform CPU write to the newly fetched line
                 else
@@ -166,7 +166,7 @@ module control_logic #(
             end
 
             S_WRITE_THROUGH: begin
-                // 🟢 CHANGED: Write-through + No-Write-Allocate
+                // Write-through + No-Write-Allocate
                 // If hit: update cache and memory
                 // If miss: update memory only (skip cache update)
                 if (is_hit) begin
