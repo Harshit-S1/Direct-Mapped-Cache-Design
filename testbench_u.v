@@ -116,38 +116,28 @@ module tb_cache_dual_modes;
         @(posedge clk);
         reset = 0;
         wait_cycles(3);
-
-        // -------------------------------//
+     
         // TEST 1: Basic write and read   //
-        // -------------------------------//
         $display("\n--- TEST 1: Write then Read (0x1234 = 0xAA) ---");
         cpu_write(16'h1234, 8'hAA);
         cpu_read(16'h1234);
 
-        // ----------------------------------//
         // TEST 2: Conflict (forces eviction)//
-        // ----------------------------------//
         $display("\n--- TEST 2: Write 0x1234 (dirty), then read 0x9234 (same index) ---");
         cpu_write(16'h1234, 8'hCC);
         cpu_read(16'h9234);
 
-        // -------------------------------//
         // TEST 3: Re-read old address    //
-        // -------------------------------//
         $display("\n--- TEST 3: Read 0x1234 again ---");
         cpu_read(16'h1234);
 
-        // -------------------------------//
         // TEST 4: Sequential hits        //
-        // -------------------------------//
         $display("\n--- TEST 4: Repeated hits on same address ---");
         cpu_read(16'h1234);
         cpu_read(16'h1234);
         cpu_read(16'h1234);
 
-        // -------------------------------//
         // TEST 5: Fresh miss             //
-        // -------------------------------//
         $display("\n--- TEST 5: New address miss ---");
         cpu_read(16'hB333);
 
