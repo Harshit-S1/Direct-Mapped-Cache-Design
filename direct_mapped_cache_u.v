@@ -28,14 +28,14 @@ module direct_mapped_cache #(
     wire cache_write_en;
 
     wire [DATA_WIDTH-1:0] mem_data_out;
-    wire [DATA_WIDTH-1:0] mem_data_in;   // 🟢 added
+    wire [DATA_WIDTH-1:0] mem_data_in;   
     wire mem_ready;
     wire mem_write_en;
     wire mem_read_en;
 
     wire is_hit;
-    wire dirty_in;          // 🟢 added
-    wire dirty_write_en;    // 🟢 added
+    wire dirty_in;         
+    wire dirty_write_en;    
 
     reg [ADDRESS_WIDTH-1:0] addr_reg;
     reg [DATA_WIDTH-1:0] data_in_reg;
@@ -56,12 +56,12 @@ module direct_mapped_cache #(
         end
     end
 
-    // 🟢 Mux for main memory input (CPU data vs dirty cache line)
+    // Mux for main memory input (CPU data vs dirty cache line)
     assign mem_data_in =
     (mem_write_en && !mem_read_en && WRITE_POLICY == "WRITE_BACK") ? cache_data_out : data_in_reg;
 
 
-    // 🟢 Cache input data selection (memory data for fill, CPU data otherwise)
+    // Cache input data selection (memory data for fill, CPU data otherwise)
     wire [DATA_WIDTH-1:0] cache_write_data =
     (fsm.state == fsm.S_READ_UPDATE) ? mem_data_out : data_in_reg;
 
@@ -119,7 +119,7 @@ module direct_mapped_cache #(
         .mem_ready(mem_ready),
         .data_from_cache(cache_data_out),
         .data_from_mem(mem_data_out),
-        .dirty_out(cache_dirty_out),      // 🟢 added connection
+        .dirty_out(cache_dirty_out),    
         .data_out(data_out),
         .hit(hit),
         .miss(miss),
