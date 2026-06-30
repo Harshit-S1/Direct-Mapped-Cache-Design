@@ -40,8 +40,3 @@ Modern processors operate much faster than main memory, creating a performance g
 - Hit and miss handling  
 - Verilog-based hardware design  
 - Timing and waveform analysis  
-
-## Future Improvements
-- Set-associative cache implementation  
-- Performance comparison with fully associative cache  
-- Parameterized cache size and block size  
